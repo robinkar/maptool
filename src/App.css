@@ -1,0 +1,166 @@
+body {
+  background-color: #1e1e1e;
+  overscroll-behavior: none;
+}
+
+#root {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+#root::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+#map {
+  max-width: 85%;
+  overflow: hidden;
+  margin: 5px;
+}
+
+#menu {
+  height: 100%;
+  background: #252525;
+  color: #cccccc;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  overflow-y: scroll;
+  margin-right: -20px;
+  padding-right: 20px;
+}
+
+#menu-container {
+  max-width: 15%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.menu-subcontainer {
+  margin: 4px;
+  margin-bottom: 15px;
+}
+
+.menu-subcontainer span {
+  width: 100%;
+  display: block;
+}
+
+.menu-subcontainer label {
+  float: right;
+}
+
+.settings-container {
+  font-size: 12px;
+  display: block;
+}
+
+.checkbox-container label {
+  float: none;
+}
+
+label {
+  display: block;
+}
+
+input,
+select {
+  height: 34px;
+  padding: 4px;
+  margin-top: 5px;
+  width: 100%;
+  border: #515151 solid 2px;
+  border-radius: 3px;
+  background: #252525;
+  color: #ccc;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.copy-coords-button {
+
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+.coord-input {
+  width: 50%;
+  overflow-x: visible;
+  box-sizing: border-box;
+  margin-right: 2px;
+}
+
+.coord-box {
+  box-sizing: border-box;
+  margin: 4px;
+  display: flex;
+
+}
+
+input:focus {
+  background: #383838;
+  border: #646464 solid 2px;
+}
+input:invalid {
+  border: #ff0000 solid 2px;
+}
+
+button {
+  background-color: #65c3e6;
+  height: 34px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: #4f99b5 1px solid;
+  margin-top: 4px;
+  color: #ffffff;
+}
+
+.delete-button {
+  background-color: #dd2222;
+  height: 34px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: #aa0000 1px solid;
+  margin-top: 4px;
+  color: #ffffff;
+}
+
+.delete-button:active {
+  background-color: #aa0000;
+}
+button:active {
+  background-color: #4f99b5;
+}
+
+.suggestions {
+  list-style: none;
+  margin: 4px;
+  padding-left: 0px;
+  max-height: 100px;
+  overflow-y: scroll;
+  border: 2px solid #515151;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top: none;
+  margin-top: 0;
+  font-size: 12px;
+}
+
+.suggestions li {
+  background: #252525;
+  padding: 6px;
+}
+
+.suggestions li:not(:last-of-type) {
+  border-bottom: 2px solid #515151;
+}
