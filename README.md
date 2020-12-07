@@ -1,10 +1,33 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Map tool
 
-## Available Scripts
+An interactive web application for viewing a map from a game. 
+Used for visualizing game mechanics in a game where the players can build towers for their kingdom to increase their kingdoms influence.
 
-In the project directory, you can run:
 
-### `npm start`
+### Structure
+
+The backend uses Node, Express, MongoDB and WebSockets. The frontend uses React and WebSockets
+
+### Requirements
+- [Node](https://nodejs.org/en/)
+
+
+### Setup
+```git clone git@github.com:robinkar/maptool.git
+cd maptool
+npm run build```
+Create and setup database information in the file `maptool/backend/.env`
+```
+DB_SERVER=
+DB_DATABASE=
+DB_USER=
+DB_PASSWORD=
+PORT=80```
+
+
+### Running
+```cd backend
+node server.js```
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
