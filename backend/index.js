@@ -1,38 +1,12 @@
-require('dotenv').config()
-
-const express = require("express");
-const app = express();
-const towerRoute = require("./routes/towers");
-const sanitize = require("mongo-sanitize");
-const path = require("path");
 const http = require("http");
+const app = require("./app");
 const WebSocket = require("ws");
-
-app.use(
-  "/api",
-  express.json(),
-  (req, res, next) => {
-    req.body = sanitize(req.body);
-    req.params = sanitize(req.params);
-    next();
-  },
-  towerRoute
-);
-
-app.use(express.static(path.join(__dirname, "../build")));
-
-app.use(express.static("public"));
-
-app.use(function (error, req, res, next) {
-  if (error) {
-    console.log(error);
-    res.status(500).send({ error: "Server error" });
-  }
-});
 
 let server = http.createServer(app);
 
-server.listen(process.env.PORT, () => console.log("Express running on port " + process.env.PORT));
+server.listen(process.env.PORT, () =>
+  console.log("Express running on port " + process.env.PORT)
+);
 
 const wss = new WebSocket.Server({
   server: server,
@@ -67,6 +41,6 @@ wss.on("connection", function (ws, request) {
         default:
           break;
       }
-    } catch { }
+    } catch {}
   });
 });
