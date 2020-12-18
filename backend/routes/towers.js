@@ -20,12 +20,11 @@ towerRouter.post("/", async (req, res) => {
 
     const newTower = await tower.save();
 
-    res.json(t);
+    res.json(tpwer);
     console.log(
       `Inserting new tower ${t.name}(${t.kingdom}) at (${t.x},${t.y})`
     );
   } catch {
-    console.log("Error");
     res.status(400).end();
   }
 });
