@@ -5,7 +5,6 @@ import Menu from "./components/Menu";
 import Tower from "./interfaces/Tower";
 import CalculateLinks from "./Links";
 
-
 // TODO: Add configuration file for these
 const kingdoms = {
   pirates: {
@@ -26,9 +25,7 @@ const kingdoms = {
   },
 };
 
-
 export default function App() {
-
   const [towers, setTowers] = useState<Array<Tower>>([]);
   const [closestTower, setClosestTower] = useState<Tower>();
   const [mapTile, setMapTile] = useState({ x: -1, y: -1 });
@@ -50,8 +47,7 @@ export default function App() {
     ws.onopen = () => {
       setWs(ws);
     };
-    ws.onclose = () => {
-    };
+    ws.onclose = () => {};
 
     ws.onerror = (err) => {
       console.log("Error connecting to server");
@@ -78,7 +74,7 @@ export default function App() {
             console.log("Unknown action received");
             break;
         }
-      } catch { }
+      } catch {}
     };
     ws.send("ready");
   }, [ws]);
@@ -97,7 +93,6 @@ export default function App() {
     if (!ws) return;
     ws.send(JSON.stringify({ action: "UPDATE_TOWER" }));
   }, [ws]);
-
 
   const onMapClick = useCallback((pos: { x: number; y: number }) => {
     setMapTile(pos);
@@ -120,38 +115,28 @@ export default function App() {
     return closest!;
   };
 
-  const fetchTowers = () => {
-    fetch("/api/towers", { method: "GET" })
-      .then((res) => {
-        return res.json();
-      })
-      .then(
-        (res) => {
-          try {
-            let newTowers: Array<Tower> = [];
-            let resArray: Array<Tower> = res;
-            for (const tower of resArray) {
-              if (tower.kingdom in kingdoms) {
-                const color = kingdoms[tower.kingdom].color;
-                newTowers.push({
-                  ...tower,
-                  color: color,
-                  linked: tower.capital ? true : false,
-                  neighbours: [],
-                });
-              }
-            }
-            CalculateLinks(newTowers);
-            setTowers(newTowers);
-
-          } catch {
-            console.log("Error retrieving towers");
-          }
-        },
-        (err) => {
-          console.log("Error retrieving towers");
+  const fetchTowers = async () => {
+    try {
+      const res = await fetch("/api/towers", { method: "GET" });
+      const jsonData = await res.json();
+      let newTowers: Array<Tower> = [];
+      let resArray: Array<Tower> = jsonData;
+      for (const tower of resArray) {
+        if (tower.kingdom in kingdoms) {
+          const color = kingdoms[tower.kingdom].color;
+          newTowers.push({
+            ...tower,
+            color: color,
+            linked: tower.capital ? true : false,
+            neighbours: [],
+          });
         }
-      );
+      }
+      CalculateLinks(newTowers);
+      setTowers(newTowers);
+    } catch {
+      console.log("Error retrieving towers");
+    }
   };
 
   // Get towers from API on page load
@@ -171,16 +156,19 @@ export default function App() {
         capital: false,
       };
       const body = JSON.stringify(tower);
-      await fetch("/api/towers", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: body,
-      })
-        .then((res) => res.text())
-        .then((res) => { });
+      try {
+        await fetch("/api/towers", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: body,
+        });
+      } catch (error) {
+        console.log("Error creating tower");
+      }
+
       await fetchTowers();
       sendAddTower();
     },
@@ -190,15 +178,17 @@ export default function App() {
   // Send request to delete tower with the specified ID
   const deleteTower = useCallback(
     async (id: string) => {
-      await fetch(`/api/towers/${id}`, {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.text())
-        .then((res) => { });
+      try {
+        await fetch(`/api/towers/${id}`, {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+      } catch (error) {
+        console.log("Error deleting tower");
+      }
       await fetchTowers();
       sendDeleteTower();
     },
@@ -209,16 +199,18 @@ export default function App() {
   const updateTower = useCallback(
     async (id: string, name: string, ql: number, kingdom: string) => {
       const body = JSON.stringify({ name: name, ql: ql, kingdom: kingdom });
-      await fetch(`/api/towers/${id}`, {
-        method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: body,
-      })
-        .then((res) => res.text())
-        .then((res) => { });
+      try {
+        await fetch(`/api/towers/${id}`, {
+          method: "PATCH",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: body,
+        });
+      } catch (error) {
+        console.log("Error updating tower");
+      }
       await fetchTowers();
       sendUpdateTower();
     },
