@@ -3,7 +3,7 @@ import "./App.css";
 import Map from "./components/Map";
 import Menu from "./components/Menu";
 import Tower from "./interfaces/Tower";
-import CalculateLinks from "./Links";
+import CalculateLinks from "./util/Links";
 
 // TODO: Add configuration file for these
 const kingdoms = {

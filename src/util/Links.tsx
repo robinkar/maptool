@@ -1,4 +1,4 @@
-import Tower from "./interfaces/Tower";
+import Tower from "../interfaces/Tower";
 
 const LINK_DIST = 100;
 
